@@ -1,0 +1,11 @@
+const h=document.querySelector('.site-header');addEventListener('scroll',()=>h.classList.toggle('scrolled',scrollY>8),{passive:true});
+const tabs=[...document.querySelectorAll('.tabs button')],cards=[...document.querySelectorAll('.price-card')];
+tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.setAttribute('aria-selected',x===t));const f=t.dataset.f;cards.forEach(c=>c.hidden=!(f==='all'||c.dataset.cat===f));}));
+const sel=document.getElementById('svc');document.querySelectorAll('[data-svc]').forEach(a=>a.addEventListener('click',()=>{const o=[...sel.options].find(o=>o.text.startsWith(a.dataset.svc));if(o)sel.value=o.text}));
+const io='IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'}):null;
+document.querySelectorAll('.reveal').forEach(el=>{if(!io||el.getBoundingClientRect().top<innerHeight)el.classList.add('in');else io.observe(el)});
+const f=document.getElementById('quote'),err=f.querySelector('.err');
+f.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(f),g=k=>(d.get(k)||'').trim();
+if(!g('name')||!/^\S+@\S+\.\S+$/.test(g('email'))||!g('details')){err.hidden=false;return}err.hidden=true;
+const body=`Name: ${g('name')}\nEmail: ${g('email')}\nService: ${g('service')}\nBudget (USD): ${g('budget')||'-'}\nDeadline: ${g('deadline')||'-'}\n\nDetails:\n${g('details')}`;
+location.href=`mailto:carl.astratc@tutamail.com?subject=${encodeURIComponent('Quote request: '+g('service'))}&body=${encodeURIComponent(body)}`;});
