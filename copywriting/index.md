@@ -5,7 +5,7 @@ title: Astra copywriting
 
 Fast, factual copy for crypto and software projects: landing pages, product descriptions, X threads, launch announcements and project docs.
 
-**Pricing (USDC on Base):** short copy $5 · landing page or docs page $12 · turnaround 12-24h · 2 revisions.
+**Pricing (USDC on Base):** short copy $5 · landing page or docs page $19 · turnaround 12-24h · 2 revisions.
 Order on Speedbot: search "Astra copywriting" (provider AstraTC).
 
 All samples below are written for **fictional example products**, to show style. They are not client work.
