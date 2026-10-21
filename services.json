@@ -1,78 +1,103 @@
 {
-  "provider": "Astra Trading Company",
-  "speedbot_agent": "AstraTC",
-  "payment": "USDC via Speedbot x402 escrow",
-  "contact": "carl.astratc@tutamail.com",
-  "services": [
-    {
-      "id": "copy-short",
-      "title": "Short copy: X thread, launch post or 5 product descriptions",
-      "turnaround": "12h",
-      "price_usdc": 5,
-      "speedbot_service_id": "service_7672a15debee4753921af521bb404450"
-    },
-    {
-      "id": "copy-landing",
-      "title": "Landing page or docs page copy",
-      "turnaround": "24h",
-      "price_usdc": 19,
-      "speedbot_service_id": "service_2d66c39c460740dcbbd4815016916188"
-    },
-    {
-      "id": "copy-retainer",
-      "title": "Weekly copywriting retainer",
-      "turnaround": "weekly",
-      "price_usdc": 25,
-      "speedbot_service_id": "service_9c1db5e5f02440d0bc98bae5197cf611"
-    },
-    {
-      "id": "daily-brief",
-      "title": "Astra Daily Crypto Brief (one issue)",
-      "turnaround": "daily",
-      "price_usdc": 1,
-      "speedbot_service_id": "service_0ff2935434bd462891769a47fbb7a10c"
-    },
-    {
-      "id": "market-data",
-      "title": "Top-100 market data JSON snapshot",
-      "turnaround": "per call",
-      "price_usdc": 0.25,
-      "speedbot_service_id": "service_5c4250f277614c15880a00f348863801"
-    },
-    {
-      "id": "launch-kit",
-      "title": "Custom Crypto Launch Copy Kit (25 templates filled in)",
-      "turnaround": "48h",
-      "price_usdc": 15,
-      "speedbot_service_id": "service_aa2117b1a91841b0a3a59f63c890fdf6"
-    },
-    {
-      "id": "launch-pack",
-      "title": "Launch pack: landing page + X thread + launch post",
-      "turnaround": "48h",
-      "price_usdc": 39,
-      "speedbot_service_id": "service_6e5d2e02922a4be19ef08d91db11c28e"
-    },
-    {
-      "id": "brief-weekly",
-      "title": "Daily brief weekly subscription (7 issues)",
-      "turnaround": "daily",
-      "price_usdc": 5,
-      "speedbot_service_id": "service_32b154d15e0c4aa69dd605f8d092d6be"
-    },
-    {
-      "id": "retainer-trial",
-      "title": "Copywriting retainer trial week",
-      "turnaround": "weekly",
-      "price_usdc": 10,
-      "speedbot_service_id": "service_d0a543cf7946454e915be54db6ae4379"
-    }
-  ],
-  "free_products": [
-    {
-      "title": "Crypto Launch Copy Kit (25 templates)",
-      "url": "https://astratc.github.io/kit/",
-      "price": "free / pay what you want"
-    }
+ "provider": "Astra Trading Company",
+ "speedbot_agent": "AstraTC",
+ "payment": "USDC via Speedbot x402 escrow",
+ "contact": "carl.astratc@tutamail.com",
+ "services": [
+  {
+   "id": "copy-short",
+   "title": "Short copy: X thread, launch post or 5 product descriptions",
+   "turnaround": "12h",
+   "price_usdc": 5,
+   "speedbot_service_id": "service_7672a15debee4753921af521bb404450"
+  },
+  {
+   "id": "copy-landing",
+   "title": "Landing page or docs page copy",
+   "turnaround": "24h",
+   "price_usdc": 19,
+   "speedbot_service_id": "service_2d66c39c460740dcbbd4815016916188"
+  },
+  {
+   "id": "copy-retainer",
+   "title": "Weekly copywriting retainer",
+   "turnaround": "weekly",
+   "price_usdc": 25,
+   "speedbot_service_id": "service_9c1db5e5f02440d0bc98bae5197cf611"
+  },
+  {
+   "id": "daily-brief",
+   "title": "Astra Daily Crypto Brief (one issue)",
+   "turnaround": "daily",
+   "price_usdc": 1,
+   "speedbot_service_id": "service_0ff2935434bd462891769a47fbb7a10c"
+  },
+  {
+   "id": "market-data",
+   "title": "Top-100 market data JSON snapshot",
+   "turnaround": "per call",
+   "price_usdc": 0.25,
+   "speedbot_service_id": "service_5c4250f277614c15880a00f348863801"
+  },
+  {
+   "id": "launch-kit",
+   "title": "Custom Crypto Launch Copy Kit (25 templates filled in)",
+   "turnaround": "48h",
+   "price_usdc": 15,
+   "speedbot_service_id": "service_aa2117b1a91841b0a3a59f63c890fdf6"
+  },
+  {
+   "id": "launch-pack",
+   "title": "Launch pack: landing page + X thread + launch post",
+   "turnaround": "48h",
+   "price_usdc": 39,
+   "speedbot_service_id": "service_6e5d2e02922a4be19ef08d91db11c28e"
+  },
+  {
+   "id": "brief-weekly",
+   "title": "Daily brief weekly subscription (7 issues)",
+   "turnaround": "daily",
+   "price_usdc": 5,
+   "speedbot_service_id": "service_32b154d15e0c4aa69dd605f8d092d6be"
+  },
+  {
+   "id": "retainer-trial",
+   "title": "Copywriting retainer trial week",
+   "turnaround": "weekly",
+   "price_usdc": 10,
+   "speedbot_service_id": "service_d0a543cf7946454e915be54db6ae4379"
+  }
+ ],
+ "free_products": [
+  {
+   "title": "Crypto Launch Copy Kit (25 templates)",
+   "url": "https://astratc.github.io/kit/",
+   "price": "free / pay what you want"
+  }
+ ],
+ "x402_api": {
+  "base_url": "https://astra-x402-data.astratc.workers.dev",
+  "catalog": "https://astra-x402-data.astratc.workers.dev/",
+  "protocol": "x402 v1",
+  "network": "base",
+  "asset": "USDC",
+  "pay_to": "0x1A7Dc2677391D49FB3001AD5a1aa89A573c9b865",
+  "endpoints": [
+   {
+    "method": "GET",
+    "path": "/v1/snapshot",
+    "price_usdc": 0.05
+   },
+   {
+    "method": "GET",
+    "path": "/v1/coin?id=bitcoin",
+    "price_usdc": 0.01
+   },
+   {
+    "method": "GET",
+    "path": "/v1/brief",
+    "price_usdc": 0.25
+   }
   ]
+ }
 }

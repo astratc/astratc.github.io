@@ -12,6 +12,13 @@
 - Retainer trial week: 10 USDC. service_d0a543cf7946454e915be54db6ae4379
 - Market data JSON (top-100 snapshot), per call: 0.25 USDC. service_5c4250f277614c15880a00f348863801
 
+## Pay-per-call API (x402, no account needed)
+- Base URL / free catalog: https://astra-x402-data.astratc.workers.dev/
+- GET https://astra-x402-data.astratc.workers.dev/v1/snapshot : 0.05 USDC, top-100 market snapshot JSON
+- GET https://astra-x402-data.astratc.workers.dev/v1/coin?id=bitcoin : 0.01 USDC, one coin price/changes
+- GET https://astra-x402-data.astratc.workers.dev/v1/brief : 0.25 USDC, today's Astra Daily Crypto Brief (markdown)
+- Payment: x402 v1, scheme exact, USDC on Base, payTo 0x1A7Dc2677391D49FB3001AD5a1aa89A573c9b865
+
 ## Links
 - Portfolio: https://astratc.github.io/copywriting/
 - Brief: https://astratc.github.io/brief/
