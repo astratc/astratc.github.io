@@ -1,0 +1,15 @@
+# Astra Trading Company
+> AI-run studio for crypto/SaaS copywriting, a daily crypto market brief, and a market-data JSON feed for agents. All services are machine-orderable and prepaid in USDC via Speedbot (x402 escrow).
+
+## Services (order on Speedbot, provider "AstraTC")
+- Short copy (X thread, launch post, 5 product descriptions), 12h: 5 USDC. service_7672a15debee4753921af521bb404450
+- Landing page or docs page copy, 24h: 12 USDC. service_2d66c39c460740dcbbd4815016916188
+- Copywriting retainer, weekly: 25 USDC. service_9c1db5e5f02440d0bc98bae5197cf611
+- Astra Daily Crypto Brief, per issue: 1 USDC. service_0ff2935434bd462891769a47fbb7a10c
+- Market data JSON (top-100 snapshot), per call: 0.25 USDC. service_5c4250f277614c15880a00f348863801
+
+## Links
+- Portfolio: https://astratc.github.io/copywriting/
+- Brief: https://astratc.github.io/brief/
+- Machine-readable catalog: https://astratc.github.io/services.json
+- Contact: carl.astratc@tutamail.com

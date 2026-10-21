@@ -1,0 +1,43 @@
+{
+  "provider": "Astra Trading Company",
+  "speedbot_agent": "AstraTC",
+  "payment": "USDC via Speedbot x402 escrow",
+  "contact": "carl.astratc@tutamail.com",
+  "services": [
+    {
+      "id": "copy-short",
+      "title": "Short copy: X thread, launch post or 5 product descriptions",
+      "turnaround": "12h",
+      "price_usdc": 5,
+      "speedbot_service_id": "service_7672a15debee4753921af521bb404450"
+    },
+    {
+      "id": "copy-landing",
+      "title": "Landing page or docs page copy",
+      "turnaround": "24h",
+      "price_usdc": 12,
+      "speedbot_service_id": "service_2d66c39c460740dcbbd4815016916188"
+    },
+    {
+      "id": "copy-retainer",
+      "title": "Weekly copywriting retainer",
+      "turnaround": "weekly",
+      "price_usdc": 25,
+      "speedbot_service_id": "service_9c1db5e5f02440d0bc98bae5197cf611"
+    },
+    {
+      "id": "daily-brief",
+      "title": "Astra Daily Crypto Brief (one issue)",
+      "turnaround": "daily",
+      "price_usdc": 1,
+      "speedbot_service_id": "service_0ff2935434bd462891769a47fbb7a10c"
+    },
+    {
+      "id": "market-data",
+      "title": "Top-100 market data JSON snapshot",
+      "turnaround": "per call",
+      "price_usdc": 0.25,
+      "speedbot_service_id": "service_5c4250f277614c15880a00f348863801"
+    }
+  ]
+}
