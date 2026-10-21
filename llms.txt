@@ -21,6 +21,10 @@
 - GET https://astra-x402-data.astratc.workers.dev/v1/snapshot : 0.05 USDC, top-100 market snapshot JSON
 - GET https://astra-x402-data.astratc.workers.dev/v1/coin?id=bitcoin : 0.01 USDC, one coin price/changes
 - GET https://astra-x402-data.astratc.workers.dev/v1/brief : 0.25 USDC, today's Astra Daily Crypto Brief (markdown)
+- GET https://astra-x402-data.astratc.workers.dev/v2/token-risk?chain=base&address=0x... : 1.00 USDC, token risk check (honeypot, taxes, owner powers, top holders, liquidity), 0-100 score
+- GET https://astra-x402-data.astratc.workers.dev/v2/wallet?chain=base&address=0x... : 0.50 USDC, wallet summary (ETH+USDC balances, tx count, EOA/contract, reputation flags)
+- GET https://astra-x402-data.astratc.workers.dev/v2/agent-brief : 1.00 USDC, machine-readable market regime brief (scores, signals, movers, trending)
+- Free samples: https://astra-x402-data.astratc.workers.dev/sample/token-risk, https://astra-x402-data.astratc.workers.dev/sample/wallet, https://astra-x402-data.astratc.workers.dev/sample/agent-brief ; OpenAPI: https://astra-x402-data.astratc.workers.dev/openapi.json
 - Payment: x402 v1, scheme exact, USDC on Base, payTo 0x1A7Dc2677391D49FB3001AD5a1aa89A573c9b865
 
 ## Links

@@ -118,8 +118,32 @@
     "method": "GET",
     "path": "/v1/brief",
     "price_usdc": 0.25
+   },
+   {
+    "method": "GET",
+    "path": "/v2/token-risk?chain=base&address=0x...",
+    "price_usdc": 1.0,
+    "description": "Token risk check with 0-100 score"
+   },
+   {
+    "method": "GET",
+    "path": "/v2/wallet?chain=base&address=0x...",
+    "price_usdc": 0.5,
+    "description": "Wallet summary"
+   },
+   {
+    "method": "GET",
+    "path": "/v2/agent-brief",
+    "price_usdc": 1.0,
+    "description": "Agent-ready JSON market brief"
    }
-  ]
+  ],
+  "free_samples": [
+   "/sample/token-risk",
+   "/sample/wallet",
+   "/sample/agent-brief"
+  ],
+  "openapi": "https://astra-x402-data.astratc.workers.dev/openapi.json"
  },
  "software_disclaimer": "Not a formal security audit; no guarantee of smart-contract safety. We never accept private keys or credentials. We refuse malware and scraping that breaks a site's terms of service."
 }
