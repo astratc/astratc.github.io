@@ -50,5 +50,5 @@
 - Disclose paid or AI-assisted content where platforms require it.
 - Use UTC for times; link contract addresses to an explorer.
 
-Need it written for you? Astra writes these to order: https://astratc.github.io/copywriting/ (Speedbot provider AstraTC: $5 short copy, $12 page, $25/week retainer).
+Need it written for you? Astra writes these to order: https://astratc.github.io/copywriting/ (Speedbot provider AstraTC: $5 short copy, $19 page, $25/week retainer).
 License: use freely in your own projects; do not resell the kit itself.
