@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sample 2: Bug fix, address-poisoning detection in Wallet Health Card | Astra Trading Co.</title><link rel="icon" href="../favicon.png"><style>body{font-family:system-ui,sans-serif;max-width:960px;margin:auto;padding:24px;line-height:1.55;background:#110b2e;color:#f3eefc}
+a{color:#d4af6a}h1,h2{color:#d4af6a;font-family:Georgia,serif}table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+td,th{border-bottom:1px solid rgba(212,175,106,.28);padding:6px;text-align:left;vertical-align:top}code{background:rgba(255,255,255,.08);padding:1px 4px;border-radius:4px}
+pre{background:rgba(255,255,255,.06);padding:12px;border-radius:8px;overflow:auto}pre code{background:none}.top{margin-bottom:12px}</style></head><body>
+<div class="top"><a href="../">← Astra Trading Co.</a> · <a href="./">Software samples</a></div>
+<h1>Sample 2: Bug fix, address-poisoning detection in Wallet Health Card</h1>
+<p><strong>Service:</strong> Bug fix, $35, 48h · <strong>Repo:</strong> <a href="https://github.com/astratc/wallet-health-card">astratc/wallet-health-card</a> · <strong>Fix commit:</strong> <a href="https://github.com/astratc/wallet-health-card/commit/b1b82b818bbfc5ccfdc3fa5ca3b9dfcf9131a2a7"><code>b1b82b8</code></a> · <strong>Bug:</strong> finding 1 from the <a href="code-review.html">code review</a></p>
+<h2>Summary</h2>
+<p>The scanner was built to raise a high-severity alert when you&#39;ve sent funds to an address-poisoning look-alike. That alert could never fire. Worse, when your real contact sent you something, the tool reported <em>them</em> as the fake. We reproduced the bug, found the root cause, fixed it with a small change to one function and added a regression test that fails before the fix and passes after it. The live demo is unchanged and still serves 200.</p>
+<h2>Reproduce (before the fix)</h2>
+<p>A wallet pays its friend <code>0xabcd…5678</code>. A poisoner sends a zero-value transfer from the look-alike <code>0xabcdff…5678</code>. The wallet then copies the wrong address and pays the look-alike 25 USDC. The friend also sends a refund.</p>
+<pre><code class="language-js">detectPoisoning(ME, [
+  tr(ME, FAKE,   &quot;25000000&quot;, &quot;0xoops&quot;,   &quot;2026-10-21T10:00Z&quot;),  // paid the fake
+  tr(FAKE, ME,   &quot;0&quot;,        &quot;0xpoison&quot;, &quot;2026-10-20T10:00Z&quot;),  // poisoning transfer
+  tr(FRIEND, ME, &quot;10000000&quot;, &quot;0xrefund&quot;, &quot;2026-10-19T12:00Z&quot;),  // genuine refund
+  tr(ME, FRIEND, &quot;50000000&quot;, &quot;0xreal1&quot;,  &quot;2026-10-19T10:00Z&quot;)], []);
+</code></pre>
+<p><strong>Expected:</strong> a high &quot;funds sent to look-alike&quot; hit for <code>0xoops</code> and a medium poisoning-attempt hit for <code>0xpoison</code>.
+<strong>Actual:</strong> no <code>sentToFake</code> hit at all, plus a hit on <code>0xrefund</code> claiming the <em>friend</em> is the fake that mimics the poisoner.</p>
+<h2>Root cause</h2>
+<p><code>detectPoisoning</code> built a set of &quot;real&quot; counterparties from <strong>every</strong> address the wallet had paid:</p>
+<pre><code class="language-js">for (const t of transfers) if (lc(t.from?.hash) === me &amp;&amp; lc(t.to?.hash) !== me) real.add(lc(t.to.hash));
+</code></pre>
+<p>Once you&#39;ve paid the poisoner, the poisoner is in <code>real</code>. Two things then go wrong:</p>
+<ol>
+<li>Outgoing transfers to an address in <code>real</code> are skipped (<code>if (!other || real.has(other) &amp;&amp; from === me) continue;</code>), so the payment to the fake is never examined. <code>sentToFake</code> is unreachable, and so is the -30 score penalty.</li>
+<li>An inbound transfer from the genuine friend is compared with every <code>real</code> address. The fake is now one of them and looks like the friend, so the friend is reported as <code>fake</code> and the poisoner as <code>mimics</code>.</li>
+</ol>
+<p>The existing test only covered the simple case (a poisoning attempt with no payment), so it passed.</p>
+<h2>Fix</h2>
+<ul>
+<li>Record when each paid address was <strong>first</strong> paid. A paid address is <em>genuine</em> only if no look-alike of it was paid earlier. A poisoner can only mimic a contact you already have, so the later look-alike is the fake.</li>
+<li>Skip only genuine addresses. Any other counterparty that looks like a genuine contact is a hit, and <code>sentToFake</code> is true when the wallet was the sender.</li>
+<li>Also check native-coin payments to look-alikes, not only token transfers.</li>
+<li>Clean-up from the same review: removed a stale comment and an unused import in the test (ESLint <code>no-unused-vars</code>).</li>
+</ul>
+<p>Diff: <a href="https://github.com/astratc/wallet-health-card/commit/b1b82b818bbfc5ccfdc3fa5ca3b9dfcf9131a2a7"><code>docs/core.js</code>, <code>test/run.mjs</code></a>, +32/-15 lines.</p>
+<h2>Regression test</h2>
+<p>Added to <code>test/run.mjs</code>, using the scenario above plus a native ETH payment to the fake:</p>
+<pre><code class="language-js">assert.ok(hits.every(h =&gt; h.fake === FAKE &amp;&amp; h.mimics === FRIEND));               // friend never labelled fake
+assert.deepEqual(hits.filter(h =&gt; h.sentToFake).map(h =&gt; h.tx).sort(), [&quot;0xnative&quot;, &quot;0xoops&quot;]);
+assert.deepEqual(hits.filter(h =&gt; !h.sentToFake).map(h =&gt; h.tx), [&quot;0xpoison&quot;]);
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>New test against the old <code>core.js</code></td>
+<td><strong>fails</strong>: <code>AssertionError: genuine contact must never be reported as the fake</code></td>
+</tr>
+<tr>
+<td>New test against the fixed <code>core.js</code></td>
+<td>pass</td>
+</tr>
+<tr>
+<td>Existing suite (grade, score, findings)</td>
+<td>unchanged: B, 74/100, 7 findings</td>
+</tr>
+<tr>
+<td>Live demo <a href="https://astratc.github.io/wallet-health-card/">https://astratc.github.io/wallet-health-card/</a> after deploy</td>
+<td>HTTP 200, and the served <code>core.js</code> contains the fix</td>
+</tr>
+</tbody></table>
+<h2>Known limits</h2>
+<p>Look-alike matching stays at &quot;same first 4 and last 4 hex characters&quot;, the common poisoning pattern. If a wallet paid the look-alike <em>before</em> ever paying the real contact, the earlier address is treated as genuine. This is rare, because poisoners copy existing contacts.</p>
+<p><em>Fix delivered as a commit to our own repo. For a client repo we deliver the same thing as a fork and pull request, or as a patch file.</em></p>
+</body></html>

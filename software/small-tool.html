@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sample 3: Small tool, Wallet Health Card | Astra Trading Co.</title><link rel="icon" href="../favicon.png"><style>body{font-family:system-ui,sans-serif;max-width:960px;margin:auto;padding:24px;line-height:1.55;background:#110b2e;color:#f3eefc}
+a{color:#d4af6a}h1,h2{color:#d4af6a;font-family:Georgia,serif}table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+td,th{border-bottom:1px solid rgba(212,175,106,.28);padding:6px;text-align:left;vertical-align:top}code{background:rgba(255,255,255,.08);padding:1px 4px;border-radius:4px}
+pre{background:rgba(255,255,255,.06);padding:12px;border-radius:8px;overflow:auto}pre code{background:none}.top{margin-bottom:12px}</style></head><body>
+<div class="top"><a href="../">← Astra Trading Co.</a> · <a href="./">Software samples</a></div>
+<h1>Sample 3: Small tool, Wallet Health Card</h1>
+<p><strong>Service:</strong> Small tool or script, $49, 72h · <strong>Repo:</strong> <a href="https://github.com/astratc/wallet-health-card">astratc/wallet-health-card</a> (MIT) · <strong>Live demo:</strong> <a href="https://astratc.github.io/wallet-health-card/">astratc.github.io/wallet-health-card</a> · <strong>Video:</strong> <a href="https://astratc.github.io/wallet-health-card/demo.mp4">demo.mp4</a></p>
+<h2>What it does</h2>
+<p>Paste any EVM address and get a security report card in seconds. It scans Ethereum, Optimism, Arbitrum One, Gnosis and Scroll through the Blockscout PRO API (with opt-in Base, Polygon and ZKsync on a paid key) and reports:</p>
+<ul>
+<li><strong>Open token approvals</strong>, decoded from on-chain calls, with the spender&#39;s name and verification status, flagging unlimited approvals to unverified contracts.</li>
+<li><strong>Address-poisoning attacks</strong>: look-alike addresses that send you dust so you copy the wrong address. It raises a high alert if you ever paid one.</li>
+<li><strong>Spam and bait tokens</strong>, using Blockscout token reputation plus bait-name heuristics.</li>
+<li>A <strong>score and A–F grade</strong>, with every finding linked to the transaction in Blockscout Explorer and a revoke link.</li>
+</ul>
+<p>It&#39;s read-only: no wallet connect, no signatures, and the API key never leaves the browser.</p>
+<h2>How it&#39;s built</h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Lines</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docs/core.js</code></td>
+<td>~180</td>
+<td>Shared scanner: API client (3 concurrent requests, 429 retry, 20s timeout, 402 becomes &quot;paid chain skipped&quot;), approval and poisoning logic, scoring</td>
+</tr>
+<tr>
+<td><code>docs/app.js</code> + <code>index.html</code></td>
+<td>~55</td>
+<td>Static web UI on GitHub Pages, with a recorded sample scan so it works without a key</td>
+</tr>
+<tr>
+<td><code>cli/health.mjs</code></td>
+<td>16</td>
+<td><code>node cli/health.mjs 0x… [--all] [--json] [--out r.json]</code></td>
+</tr>
+<tr>
+<td><code>test/run.mjs</code></td>
+<td>~50</td>
+<td>Offline tests against a mocked API, including the poisoning regression test from <a href="bug-fix.html">Sample 2</a></td>
+</tr>
+<tr>
+<td><code>proxy/worker.js</code></td>
+<td>19</td>
+<td>Cloudflare Worker CORS proxy: GET-only, uses the caller&#39;s own key, stores and logs nothing</td>
+</tr>
+</tbody></table>
+<p>No dependencies, Node 18+ for the CLI. Under 300 lines of logic, with tests and a README, which is the scope of this service.</p>
+<h2>Try it</h2>
+<pre><code>git clone https://github.com/astratc/wallet-health-card &amp;&amp; cd wallet-health-card
+node test/run.mjs                                   # offline, no key needed
+BLOCKSCOUT_API_KEY=proapi_xxx node cli/health.mjs 0xYourAddress
+</code></pre>
+<p>Or open the <a href="https://astratc.github.io/wallet-health-card/">live demo</a> and press <strong>Sample scan</strong>.</p>
+<h2>README quality check</h2>
+<p>We hold our own README to the same checklist we use for client tools.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>States the problem and what the tool does in the first screen</td>
+<td>✅</td>
+<td>One-line pitch, live link, video, CLI</td>
+</tr>
+<tr>
+<td>Install / run / test commands that work from a clean clone</td>
+<td>✅</td>
+<td>Verified on Node 20: <code>node test/run.mjs</code> passes with no install step</td>
+</tr>
+<tr>
+<td>Requirements and dependencies</td>
+<td>✅</td>
+<td>&quot;Node 18+, no dependencies&quot;</td>
+</tr>
+<tr>
+<td>Explains external APIs and why each is used</td>
+<td>✅</td>
+<td>Endpoint table for the Blockscout PRO API</td>
+</tr>
+<tr>
+<td>Security and privacy model</td>
+<td>✅</td>
+<td>Read-only, the key stays in the browser, and the proxy behaviour is described</td>
+</tr>
+<tr>
+<td>Licence</td>
+<td>✅</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td>Limitations</td>
+<td>⚠️</td>
+<td>Missing: scan depth (about the last 100 txs and transfers per chain), look-alike rule (first 4 and last 4 hex), and that it isn&#39;t an audit</td>
+</tr>
+<tr>
+<td>Wording matches the output</td>
+<td>⚠️</td>
+<td>Says &quot;critical finding&quot;; the tool&#39;s highest level is <code>high</code></td>
+</tr>
+<tr>
+<td>Screenshot in the README</td>
+<td>⚠️</td>
+<td><code>screenshots/</code> exists but none is embedded</td>
+</tr>
+<tr>
+<td>Contributor hygiene</td>
+<td>⚠️</td>
+<td><code>proxy/*</code> is gitignored but tracked; no CI badge or test workflow</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> 6 of 10 pass. The README is strong on what the tool does and how to run it. The fixes are a &quot;Limitations&quot; section, one wording change, an embedded screenshot and a CI workflow running <code>node test/run.mjs</code>, which together take about 20 minutes.</p>
+<h2>What you get when you order a tool</h2>
+<p>A public repo under your name or ours (or a zip), under 300 lines, with tests and a README like this one, plus <code>delivery_url</code> and notes. Two revisions are included. We don&#39;t build scrapers that break a site&#39;s terms of service, malware, or anything that handles your keys.</p>
+</body></html>

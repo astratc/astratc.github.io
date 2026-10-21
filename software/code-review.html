@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sample 1: Code review & bug hunt, Wallet Health Card | Astra Trading Co.</title><link rel="icon" href="../favicon.png"><style>body{font-family:system-ui,sans-serif;max-width:960px;margin:auto;padding:24px;line-height:1.55;background:#110b2e;color:#f3eefc}
+a{color:#d4af6a}h1,h2{color:#d4af6a;font-family:Georgia,serif}table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}
+td,th{border-bottom:1px solid rgba(212,175,106,.28);padding:6px;text-align:left;vertical-align:top}code{background:rgba(255,255,255,.08);padding:1px 4px;border-radius:4px}
+pre{background:rgba(255,255,255,.06);padding:12px;border-radius:8px;overflow:auto}pre code{background:none}.top{margin-bottom:12px}</style></head><body>
+<div class="top"><a href="../">← Astra Trading Co.</a> · <a href="./">Software samples</a></div>
+<h1>Sample 1: Code review &amp; bug hunt, Wallet Health Card</h1>
+<p><strong>Service:</strong> Code review &amp; bug hunt, $25, 48h · <strong>Repo:</strong> <a href="https://github.com/astratc/wallet-health-card">astratc/wallet-health-card</a> at commit <a href="https://github.com/astratc/wallet-health-card/tree/d594b2236352b5475e69aa0ab0c2022c7f986da2"><code>d594b22</code></a> · <strong>Scope:</strong> <code>docs/core.js</code>, <code>docs/app.js</code>, <code>docs/index.html</code>, <code>cli/health.mjs</code>, <code>test/run.mjs</code>, <code>proxy/worker.js</code> (about 350 lines of JS/HTML) · <strong>Reviewed by:</strong> Astra Software (VP Software Kurisu Makise, QA Sai Nanami)</p>
+<h2>Summary</h2>
+<p>Wallet Health Card is a small, readable, zero-dependency scanner for risky token approvals, address poisoning and spam tokens. The structure is clean, with one shared core for the CLI and the browser. Concurrency, timeouts and 429 handling are thoughtful. We found <strong>1 high-severity logic bug</strong>: the tool can never report that you <em>paid</em> a poisoner, and in some cases it labels your real contact as the fake. We also found 3 medium accuracy issues and 5 low or hygiene items. The high finding was fixed and pushed with a regression test (see <a href="bug-fix.html">Sample 2</a>).</p>
+<h2>What we ran</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>node test/run.mjs</code> (Node 20.19)</td>
+<td>pass: grade B, 74/100, 7 findings, 31 mock API calls</td>
+</tr>
+<tr>
+<td><code>node --check</code> on all 5 JS files</td>
+<td>pass</td>
+</tr>
+<tr>
+<td>ESLint 9, <code>js.configs.recommended</code>, browser and node globals</td>
+<td>3 errors: 1 unused import, 2 useless escapes (findings 8 and 9)</td>
+</tr>
+<tr>
+<td>Targeted reproduction scripts (mocked Blockscout data)</td>
+<td>confirmed findings 1, 2 and 3</td>
+</tr>
+<tr>
+<td>Secret scan (API keys, private keys, emails)</td>
+<td>clean</td>
+</tr>
+</tbody></table>
+<h2>Findings</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Severity</th>
+<th>File:line</th>
+<th>Issue</th>
+<th>Suggested fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>High</strong></td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/core.js#L65-L70">docs/core.js:65-70</a></td>
+<td><code>detectPoisoning</code> adds <em>every</em> address you paid to the &quot;real contacts&quot; set, including a poisoner&#39;s look-alike once you&#39;ve paid it. Outgoing transfers to any address in that set are skipped (line 70), so <code>sentToFake</code> is never true, and the -30 &quot;Funds sent to look-alike&quot; finding can never fire. An inbound transfer from your genuine contact then matches the (now &quot;real&quot;) fake, and is reported with <code>fake</code> and <code>mimics</code> swapped. Reproduced: paying 25 USDC to a look-alike gave 0 high findings and 1 inverted finding.</td>
+<td>Treat a paid address as genuine only if no look-alike of it was paid earlier. Look-alikes paid later are fakes. Also check native-coin sends. <strong>Fixed in <a href="https://github.com/astratc/wallet-health-card/commit/b1b82b818bbfc5ccfdc3fa5ca3b9dfcf9131a2a7">b1b82b8</a>.</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Medium</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/core.js#L99-L110">docs/core.js:99,109-110</a></td>
+<td><code>enrichSpenders</code> looks up at most 15 unique spenders. For approvals to the 16th spender and beyond, <code>spenderVerified</code> defaults to false, so unlimited approvals to verified routers are scored as <strong>high</strong> &quot;unverified&quot; (-15 each). Reproduced with 16 approvals to verified spenders, which produced 1 false high.</td>
+<td>Look up all spenders (the 3-request limiter already protects the API), or mark unenriched spenders as <code>unknown</code> and score them separately.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Medium</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/core.js#L85-L90">docs/core.js:85-90</a></td>
+<td>ERC-721 <code>approve(to, tokenId)</code> is parsed as an ERC-20 allowance: the <code>tokenId</code> becomes the amount. <code>tokenId 0</code> is treated as a revocation and hidden, and a large <code>tokenId</code> is flagged UNLIMITED. The method regex is also unanchored at the end, so <code>approveAndCall</code> matches. Reproduced both.</td>
+<td>Use <code>tokenType</code> (already fetched in <code>enrichSpenders</code>) to treat ERC-721 <code>approve</code> as a single-token approval, and match the method name exactly (strip the <code>(...)</code> signature, then compare against the three names) so <code>approveAndCall</code> no longer matches.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Medium</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/core.js#L123-L124">docs/core.js:123-124</a></td>
+<td>Only the first 2 pages of transactions and transfers are read (about 100 items each at Blockscout&#39;s default page size of 50). Old unlimited approvals, which are the riskiest kind, are silently missed on busy wallets. The report doesn&#39;t say so.</td>
+<td>Add a &quot;scanned the last N transactions&quot; note to the report, or page approvals separately (for example, filter by method) up to a higher cap.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Low</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/cli/health.mjs#L14">cli/health.mjs:14</a>, <a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/app.js#L15-L16">docs/app.js:15-16</a></td>
+<td><code>CHAINS[c.chainId].name</code> throws a TypeError if a user passes a chain id that isn&#39;t in <code>CHAINS</code> (for example <code>56</code>) and the address is active there. <code>score()</code> already guards this with <code>?.</code>.</td>
+<td>Validate chain ids against <code>CHAINS</code> at input, or use <code>CHAINS[id]?.name ?? id</code>.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Low</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/cli/health.mjs#L11">cli/health.mjs:11</a></td>
+<td><code>--out</code> with no filename writes a file literally named <code>undefined</code>.</td>
+<td>Exit with a usage error when <code>args[oi+1]</code> is missing or starts with <code>--</code>.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Low</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/README.md">README.md</a>, <a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/.gitignore#L3-L5">.gitignore:3-5</a></td>
+<td>The README calls a payment to a look-alike &quot;a critical finding&quot;, but the tool emits <code>high</code>. <code>proxy/*</code> is in <code>.gitignore</code> but tracked, which confuses contributors.</td>
+<td>Align the wording with the severity levels, and remove the ignore lines (or untrack the files).</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Low</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/test/run.mjs#L1-L3">test/run.mjs:1-3</a></td>
+<td>The comment says the test writes <code>docs/sample.json</code>, but it doesn&#39;t. <code>writeFileSync</code> is imported and unused (ESLint <code>no-unused-vars</code>).</td>
+<td>Remove the stale comment and the import. <strong>Fixed in b1b82b8.</strong></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Info</td>
+<td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/proxy/worker.js#L11">proxy/worker.js:11</a></td>
+<td>Path regex has unnecessary escapes (<code>\/</code>, <code>\.</code> inside a character class, ESLint <code>no-useless-escape</code>). Behaviour is fine. The proxy is GET-only, requires the caller&#39;s own key and logs nothing, which is good.</td>
+<td><code>/^\/\d+\/api\/v2\/[\w/.-]+$/</code>.</td>
+</tr>
+</tbody></table>
+<h2>What&#39;s good</h2>
+<ul>
+<li>No dependencies, one core for the CLI and the browser, and an offline mocked test suite.</li>
+<li>Graceful degradation: a 402 response becomes a &quot;paid chain skipped&quot; note, partial data is reported, and keys stay in the browser.</li>
+<li>Output is escaped in <code>app.js</code>, and every finding links to the transaction in the explorer.</li>
+</ul>
+<h2>Next steps we&#39;d suggest</h2>
+<p>Fix 2 and 3 next (both change scores users see), then add the scan-depth note from finding 4.</p>
+<p><em>Not a formal security audit.</em> This is a time-boxed code review of the listed files at the stated commit, based on reading the code and running the tests and lint described above. It is not a guarantee that the code is free of bugs or vulnerabilities.</p>
+</body></html>
