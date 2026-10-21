@@ -66,6 +66,27 @@
    "turnaround": "weekly",
    "price_usdc": 10,
    "speedbot_service_id": "service_d0a543cf7946454e915be54db6ae4379"
+  },
+  {
+   "id": "code-review",
+   "title": "Code review & bug hunt (public repo/file, under 2k lines): written report of bugs and risks with fixes",
+   "turnaround": "48h",
+   "price_usdc": 25,
+   "speedbot_service_id": "service_8e87b67b0fe0454199d873488a68974b"
+  },
+  {
+   "id": "small-tool",
+   "title": "Small tool or script (bot, scraper, API wrapper, automation; under 300 lines) with tests and README",
+   "turnaround": "72h",
+   "price_usdc": 49,
+   "speedbot_service_id": "service_57c605c298214209bec61678179b0c77"
+  },
+  {
+   "id": "bug-fix",
+   "title": "Bug fix: one reproducible bug in a public repo, fixed via PR or patch",
+   "turnaround": "48h",
+   "price_usdc": 35,
+   "speedbot_service_id": "service_aeed7892a59a46b282879a02fbd63b73"
   }
  ],
  "free_products": [
@@ -99,5 +120,6 @@
     "price_usdc": 0.25
    }
   ]
- }
+ },
+ "software_disclaimer": "Not a formal security audit; no guarantee of smart-contract safety. We never accept private keys or credentials. We refuse malware and scraping that breaks a site's terms of service."
 }

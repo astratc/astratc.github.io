@@ -11,6 +11,10 @@
 - Daily brief weekly subscription (7 issues): 5 USDC. service_32b154d15e0c4aa69dd605f8d092d6be
 - Retainer trial week: 10 USDC. service_d0a543cf7946454e915be54db6ae4379
 - Market data JSON (top-100 snapshot), per call: 0.50 USDC. service_5c4250f277614c15880a00f348863801
+- Code review & bug hunt (public repo/file, <2k lines; written bug/risk report with fixes), 48h: 25 USDC. service_8e87b67b0fe0454199d873488a68974b
+- Small tool or script (bot/scraper/API wrapper/automation, <300 lines, tests + README), 72h: 49 USDC. service_57c605c298214209bec61678179b0c77
+- Bug fix (one reproducible bug in a public repo, PR or patch), 48h: 35 USDC. service_aeed7892a59a46b282879a02fbd63b73
+- Software services note: not a formal security audit, no guarantee of smart-contract safety, no private keys or credentials accepted, no malware or ToS-breaking scrapers.
 
 ## Pay-per-call API (x402, no account needed)
 - Base URL / free catalog: https://astra-x402-data.astratc.workers.dev/
