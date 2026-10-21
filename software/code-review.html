@@ -7,7 +7,7 @@ pre{background:rgba(255,255,255,.06);padding:12px;border-radius:8px;overflow:aut
 <h1>Sample 1: Code review &amp; bug hunt, Wallet Health Card</h1>
 <p><strong>Service:</strong> Code review &amp; bug hunt, $25, 48h · <strong>Repo:</strong> <a href="https://github.com/astratc/wallet-health-card">astratc/wallet-health-card</a> at commit <a href="https://github.com/astratc/wallet-health-card/tree/d594b2236352b5475e69aa0ab0c2022c7f986da2"><code>d594b22</code></a> · <strong>Scope:</strong> <code>docs/core.js</code>, <code>docs/app.js</code>, <code>docs/index.html</code>, <code>cli/health.mjs</code>, <code>test/run.mjs</code>, <code>proxy/worker.js</code> (about 350 lines of JS/HTML) · <strong>Reviewed by:</strong> Astra Software (VP Software Kurisu Makise, QA Sai Nanami)</p>
 <h2>Summary</h2>
-<p>Wallet Health Card is a small, readable, zero-dependency scanner for risky token approvals, address poisoning and spam tokens. The structure is clean, with one shared core for the CLI and the browser. Concurrency, timeouts and 429 handling are thoughtful. We found <strong>1 high-severity logic bug</strong>: the tool can never report that you <em>paid</em> a poisoner, and in some cases it labels your real contact as the fake. We also found 3 medium accuracy issues and 5 low or hygiene items. The high finding was fixed and pushed with a regression test (see <a href="bug-fix.html">Sample 2</a>).</p>
+<p>Wallet Health Card is a small, readable, zero-dependency scanner for risky token approvals, address poisoning and spam tokens. The structure is clean, with one shared core for the CLI and the browser. Concurrency, timeouts and 429 handling are thoughtful. We found <strong>1 high-severity logic bug</strong>: the tool can never report that you <em>paid</em> a poisoner, and in some cases it labels your real contact as the fake. We also found 3 medium accuracy issues and 5 low or hygiene items. The high finding was fixed and pushed with a regression test (see <a href="bug-fix.html">Sample 2</a>). Medium findings 2 and 3 were then fixed with regression tests in <a href="https://github.com/astratc/wallet-health-card/commit/5d171b59eddc3d5e1635ec2c9412e6c854c4dc20">5d171b5</a>.</p>
 <h2>What we ran</h2>
 <table>
 <thead>
@@ -60,14 +60,14 @@ pre{background:rgba(255,255,255,.06);padding:12px;border-radius:8px;overflow:aut
 <td>Medium</td>
 <td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/core.js#L99-L110">docs/core.js:99,109-110</a></td>
 <td><code>enrichSpenders</code> looks up at most 15 unique spenders. For approvals to the 16th spender and beyond, <code>spenderVerified</code> defaults to false, so unlimited approvals to verified routers are scored as <strong>high</strong> &quot;unverified&quot; (-15 each). Reproduced with 16 approvals to verified spenders, which produced 1 false high.</td>
-<td>Look up all spenders (the 3-request limiter already protects the API), or mark unenriched spenders as <code>unknown</code> and score them separately.</td>
+<td>Look up all spenders (the 3-request limiter already protects the API), or mark unenriched spenders as <code>unknown</code> and score them separately. <strong>Fixed in <a href="https://github.com/astratc/wallet-health-card/commit/5d171b59eddc3d5e1635ec2c9412e6c854c4dc20">5d171b5</a>:</strong> every spender is looked up, and a failed lookup is reported as &quot;could not be checked&quot; (medium), never &quot;unverified&quot;. Regression test included.</td>
 </tr>
 <tr>
 <td>3</td>
 <td>Medium</td>
 <td><a href="https://github.com/astratc/wallet-health-card/blob/d594b2236352b5475e69aa0ab0c2022c7f986da2/docs/core.js#L85-L90">docs/core.js:85-90</a></td>
 <td>ERC-721 <code>approve(to, tokenId)</code> is parsed as an ERC-20 allowance: the <code>tokenId</code> becomes the amount. <code>tokenId 0</code> is treated as a revocation and hidden, and a large <code>tokenId</code> is flagged UNLIMITED. The method regex is also unanchored at the end, so <code>approveAndCall</code> matches. Reproduced both.</td>
-<td>Use <code>tokenType</code> (already fetched in <code>enrichSpenders</code>) to treat ERC-721 <code>approve</code> as a single-token approval, and match the method name exactly (strip the <code>(...)</code> signature, then compare against the three names) so <code>approveAndCall</code> no longer matches.</td>
+<td>Use <code>tokenType</code> (already fetched in <code>enrichSpenders</code>) to treat ERC-721 <code>approve</code> as a single-token approval, and match the method name exactly (strip the <code>(...)</code> signature, then compare against the three names) so <code>approveAndCall</code> no longer matches. <strong>Fixed in <a href="https://github.com/astratc/wallet-health-card/commit/5d171b59eddc3d5e1635ec2c9412e6c854c4dc20">5d171b5</a>:</strong> ERC-721 <code>approve</code> is a single-token approval keyed per token id (<code>approve(0x0, id)</code> clears it), <code>setApprovalForAll</code> is a collection-wide approval (<code>false</code> revokes it), and method names are matched exactly. Regression tests included.</td>
 </tr>
 <tr>
 <td>4</td>
@@ -119,6 +119,6 @@ pre{background:rgba(255,255,255,.06);padding:12px;border-radius:8px;overflow:aut
 <li>Output is escaped in <code>app.js</code>, and every finding links to the transaction in the explorer.</li>
 </ul>
 <h2>Next steps we&#39;d suggest</h2>
-<p>Fix 2 and 3 next (both change scores users see), then add the scan-depth note from finding 4.</p>
+<p>Findings 2 and 3 are fixed (<a href="https://github.com/astratc/wallet-health-card/commit/5d171b59eddc3d5e1635ec2c9412e6c854c4dc20">5d171b5</a>). Next: add the scan-depth note from finding 4.</p>
 <p><em>Not a formal security audit.</em> This is a time-boxed code review of the listed files at the stated commit, based on reading the code and running the tests and lint described above. It is not a guarantee that the code is free of bugs or vulnerabilities.</p>
 </body></html>
