@@ -136,12 +136,26 @@
     "path": "/v2/agent-brief",
     "price_usdc": 1.0,
     "description": "Agent-ready JSON market brief"
+   },
+   {
+    "method": "GET|POST",
+    "path": "/v2/summarize?text=..|url=..",
+    "price_usdc": 0.1,
+    "description": "5-bullet summary + TL;DR of text or a web page"
+   },
+   {
+    "method": "GET|POST",
+    "path": "/v2/translate?text=..&to=es",
+    "price_usdc": 0.1,
+    "description": "Translate English text to another language"
    }
   ],
   "free_samples": [
    "/sample/token-risk",
    "/sample/wallet",
-   "/sample/agent-brief"
+   "/sample/agent-brief",
+   "/sample/summarize",
+   "/sample/translate"
   ],
   "openapi": "https://astra-x402-data.astratc.workers.dev/openapi.json"
  },

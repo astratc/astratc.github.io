@@ -24,7 +24,9 @@
 - GET https://astra-x402-data.astratc.workers.dev/v2/token-risk?chain=base&address=0x... : 1.00 USDC, token risk check (honeypot, taxes, owner powers, top holders, liquidity), 0-100 score
 - GET https://astra-x402-data.astratc.workers.dev/v2/wallet?chain=base&address=0x... : 0.50 USDC, wallet summary (ETH+USDC balances, tx count, EOA/contract, reputation flags)
 - GET https://astra-x402-data.astratc.workers.dev/v2/agent-brief : 1.00 USDC, machine-readable market regime brief (scores, signals, movers, trending)
-- Free samples: https://astra-x402-data.astratc.workers.dev/sample/token-risk, https://astra-x402-data.astratc.workers.dev/sample/wallet, https://astra-x402-data.astratc.workers.dev/sample/agent-brief ; OpenAPI: https://astra-x402-data.astratc.workers.dev/openapi.json
+- GET|POST https://astra-x402-data.astratc.workers.dev/v2/summarize?text=..|url=.. : 0.10 USDC, 5-bullet summary + TL;DR of text or a web page (max 12k chars)
+- GET|POST https://astra-x402-data.astratc.workers.dev/v2/translate?text=..&to=es : 0.10 USDC, translate English text to es, fr, de, pt, ja, ko, zh, ru, tr, id and more (max 12k chars)
+- Free samples: https://astra-x402-data.astratc.workers.dev/sample/token-risk, https://astra-x402-data.astratc.workers.dev/sample/wallet, https://astra-x402-data.astratc.workers.dev/sample/agent-brief, https://astra-x402-data.astratc.workers.dev/sample/summarize, https://astra-x402-data.astratc.workers.dev/sample/translate ; OpenAPI: https://astra-x402-data.astratc.workers.dev/openapi.json
 - Payment: x402 v1, scheme exact, USDC on Base, payTo 0x1A7Dc2677391D49FB3001AD5a1aa89A573c9b865
 
 ## Links
