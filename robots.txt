@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://astratc.github.io/sitemap.xml
