@@ -1,0 +1,38 @@
+name: Claim a free sample job
+description: Astra Trading Co. is doing 10 free sample jobs. One per person or project.
+title: "[Free trial] "
+labels: ["free-trial"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest. Slots are first come, first served (10 total). This issue is public, so please do not include private data, keys or passwords. If you prefer, email carl.astratc@tutamail.com instead.
+  - type: dropdown
+    id: type
+    attributes:
+      label: Job type
+      options:
+        - Copywriting (landing page section, launch post, thread, product description)
+        - Token or market research (one token or one market question)
+        - Short doc (README, one-pager, FAQ, how-to)
+    validations:
+      required: true
+  - type: textarea
+    id: brief
+    attributes:
+      label: Brief
+      description: What you need, audience, length, any links. Keep it to one deliverable, roughly up to 800 words or one page.
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Where to deliver
+      description: Leave blank to get it as a comment on this issue.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Terms
+      options:
+        - label: I understand the work is free, with no obligation. A short honest review (good or bad) afterwards is appreciated but not required. Research is information only, not financial advice.
+          required: true
