@@ -10,7 +10,7 @@
 - Launch pack (landing page + X thread + launch post): 39 USDC. service_6e5d2e02922a4be19ef08d91db11c28e
 - Daily brief weekly subscription (7 issues): 5 USDC. service_32b154d15e0c4aa69dd605f8d092d6be
 - Retainer trial week: 10 USDC. service_d0a543cf7946454e915be54db6ae4379
-- Market data JSON (top-100 snapshot), per call: 0.25 USDC. service_5c4250f277614c15880a00f348863801
+- Market data JSON (top-100 snapshot), per call: 0.50 USDC. service_5c4250f277614c15880a00f348863801
 
 ## Pay-per-call API (x402, no account needed)
 - Base URL / free catalog: https://astra-x402-data.astratc.workers.dev/

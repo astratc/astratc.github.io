@@ -36,7 +36,7 @@
    "id": "market-data",
    "title": "Top-100 market data JSON snapshot",
    "turnaround": "per call",
-   "price_usdc": 0.25,
+   "price_usdc": 0.5,
    "speedbot_service_id": "service_5c4250f277614c15880a00f348863801"
   },
   {
