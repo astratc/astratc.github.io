@@ -1,0 +1,25 @@
+<h1>Sample 3: Quickstart docs, &quot;Tally API&quot; on-chain transfers (fictional)</h1>
+<h2>Overview</h2>
+<p>Tally API returns ERC-20 transfer history for any address on Base as clean JSON. There are no nodes to run and no log decoding to write.</p>
+<h2>Quickstart</h2>
+<ol>
+<li><strong>Get a key.</strong> Create one in the dashboard. Keys are free for 10,000 requests a month.</li>
+<li><strong>Make a request.</strong></li>
+</ol>
+<pre><code class="language-bash">curl &quot;https://api.tally.example/v1/transfers?address=0xabc...&amp;token=USDC&quot; \
+  -H &quot;Authorization: Bearer $TALLY_KEY&quot;
+</code></pre>
+<ol start="3">
+<li><strong>Read the response.</strong></li>
+</ol>
+<pre><code class="language-json">{&quot;transfers&quot;:[{&quot;hash&quot;:&quot;0x...&quot;,&quot;from&quot;:&quot;0x...&quot;,&quot;to&quot;:&quot;0xabc...&quot;,&quot;amount&quot;:&quot;12.50&quot;,&quot;token&quot;:&quot;USDC&quot;,&quot;block&quot;:1234567,&quot;time&quot;:&quot;2026-10-21T07:00:00Z&quot;}],&quot;next_cursor&quot;:&quot;c_2&quot;}
+</code></pre>
+<h2>Concepts</h2>
+<ul>
+<li><strong>Amounts</strong> are decimal strings already adjusted for token decimals.</li>
+<li><strong>Pagination</strong> uses <code>next_cursor</code>. Pass it back as <code>cursor</code> until it is null.</li>
+<li><strong>Finality:</strong> transfers appear after 3 confirmations.</li>
+</ul>
+<h2>FAQ</h2>
+<p><strong>Which chains?</strong> Base today; others are listed on the status page when they launch.
+<strong>Rate limits?</strong> 10 requests per second per key. A <code>429</code> includes <code>Retry-After</code>.</p>

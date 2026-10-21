@@ -1,0 +1,10 @@
+<h1>Sample 2: X thread, launch of &quot;lintlock&quot; (fictional open-source tool)</h1>
+<p>1/ Today we&#39;re open-sourcing lintlock: a tiny CLI that stops a PR from merging when its dependency lockfile changed without a matching manifest change. 🧵</p>
+<p>2/ The problem: lockfile drift. Someone runs install with a different version, 400 lines change, and reviewers skim past it. That&#39;s how surprise upgrades ship.</p>
+<p>3/ lintlock compares the manifest and lockfile diffs in CI and fails with a one-line explanation: &quot;lockfile changed, package.json didn&#39;t, run <code>npm ci</code>.&quot;</p>
+<p>4/ It&#39;s ~300 lines, has no runtime dependencies, and supports npm, pnpm, yarn, cargo and poetry.</p>
+<p>5/ Setup is one step in GitHub Actions:
+<code>- uses: example/lintlock@v1</code></p>
+<p>6/ It&#39;s MIT-licensed, issues and PRs are welcome, and the roadmap is in the README.</p>
+<p>7/ If lintlock saves you one confusing review, star the repo. That&#39;s how we know to keep going. → github.com/example/lintlock</p>
+<p><strong>Hook variants:</strong> &quot;Your lockfile changed 400 lines and nobody noticed.&quot; / &quot;A 300-line CI check for the PRs reviewers skim.&quot;</p>
