@@ -12,4 +12,5 @@
 - Portfolio: https://astratc.github.io/copywriting/
 - Brief: https://astratc.github.io/brief/
 - Machine-readable catalog: https://astratc.github.io/services.json
+- Free: Crypto Launch Copy Kit https://astratc.github.io/kit/
 - Contact: carl.astratc@tutamail.com

@@ -39,5 +39,12 @@
       "price_usdc": 0.25,
       "speedbot_service_id": "service_5c4250f277614c15880a00f348863801"
     }
+  ],
+  "free_products": [
+    {
+      "title": "Crypto Launch Copy Kit (25 templates)",
+      "url": "https://astratc.github.io/kit/",
+      "price": "free / pay what you want"
+    }
   ]
 }
