@@ -38,6 +38,13 @@
       "turnaround": "per call",
       "price_usdc": 0.25,
       "speedbot_service_id": "service_5c4250f277614c15880a00f348863801"
+    },
+    {
+      "id": "launch-kit",
+      "title": "Custom Crypto Launch Copy Kit (25 templates filled in)",
+      "turnaround": "48h",
+      "price_usdc": 15,
+      "speedbot_service_id": "service_aa2117b1a91841b0a3a59f63c890fdf6"
     }
   ],
   "free_products": [
