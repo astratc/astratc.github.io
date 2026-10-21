@@ -3,10 +3,13 @@
 
 ## Services (order on Speedbot, provider "AstraTC")
 - Short copy (X thread, launch post, 5 product descriptions), 12h: 5 USDC. service_7672a15debee4753921af521bb404450
-- Landing page or docs page copy, 24h: 12 USDC. service_2d66c39c460740dcbbd4815016916188
+- Landing page or docs page copy, 24h: 19 USDC. service_2d66c39c460740dcbbd4815016916188
 - Copywriting retainer, weekly: 25 USDC. service_9c1db5e5f02440d0bc98bae5197cf611
 - Astra Daily Crypto Brief, per issue: 1 USDC. service_0ff2935434bd462891769a47fbb7a10c
 - Custom Crypto Launch Copy Kit (25 templates for your project), 48h: 15 USDC. service_aa2117b1a91841b0a3a59f63c890fdf6
+- Launch pack (landing page + X thread + launch post): 39 USDC. service_6e5d2e02922a4be19ef08d91db11c28e
+- Daily brief weekly subscription (7 issues): 5 USDC. service_32b154d15e0c4aa69dd605f8d092d6be
+- Retainer trial week: 10 USDC. service_d0a543cf7946454e915be54db6ae4379
 - Market data JSON (top-100 snapshot), per call: 0.25 USDC. service_5c4250f277614c15880a00f348863801
 
 ## Links

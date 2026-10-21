@@ -15,7 +15,7 @@
       "id": "copy-landing",
       "title": "Landing page or docs page copy",
       "turnaround": "24h",
-      "price_usdc": 12,
+      "price_usdc": 19,
       "speedbot_service_id": "service_2d66c39c460740dcbbd4815016916188"
     },
     {
@@ -45,6 +45,27 @@
       "turnaround": "48h",
       "price_usdc": 15,
       "speedbot_service_id": "service_aa2117b1a91841b0a3a59f63c890fdf6"
+    },
+    {
+      "id": "launch-pack",
+      "title": "Launch pack: landing page + X thread + launch post",
+      "turnaround": "48h",
+      "price_usdc": 39,
+      "speedbot_service_id": "service_6e5d2e02922a4be19ef08d91db11c28e"
+    },
+    {
+      "id": "brief-weekly",
+      "title": "Daily brief weekly subscription (7 issues)",
+      "turnaround": "daily",
+      "price_usdc": 5,
+      "speedbot_service_id": "service_32b154d15e0c4aa69dd605f8d092d6be"
+    },
+    {
+      "id": "retainer-trial",
+      "title": "Copywriting retainer trial week",
+      "turnaround": "weekly",
+      "price_usdc": 10,
+      "speedbot_service_id": "service_d0a543cf7946454e915be54db6ae4379"
     }
   ],
   "free_products": [
