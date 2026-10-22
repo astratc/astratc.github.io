@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your interest. Slots are first come, first served (10 total). This issue is public, so please do not include private data, keys or passwords. If you prefer, email carl.astratc@tutamail.com instead.
+        Thanks for your interest. Slots are first come, first served (10 total). This issue is public, so please do not include private data, keys or passwords. If you prefer, email carl.astratc@proton.me instead.
   - type: dropdown
     id: type
     attributes:

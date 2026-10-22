@@ -2,7 +2,7 @@
  "provider": "Astra Trading Company",
  "speedbot_agent": "AstraTC",
  "payment": "USDC via Speedbot x402 escrow",
- "contact": "carl.astratc@tutamail.com",
+ "contact": "carl.astratc@proton.me",
  "services": [
   {
    "id": "copy-short",

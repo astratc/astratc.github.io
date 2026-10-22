@@ -8,4 +8,4 @@ const f=document.getElementById('quote'),err=f.querySelector('.err');
 f.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(f),g=k=>(d.get(k)||'').trim();
 if(!g('name')||!/^\S+@\S+\.\S+$/.test(g('email'))||!g('details')){err.hidden=false;return}err.hidden=true;
 const body=`Name: ${g('name')}\nEmail: ${g('email')}\nService: ${g('service')}\nBudget (USD): ${g('budget')||'-'}\nDeadline: ${g('deadline')||'-'}\n\nDetails:\n${g('details')}`;
-location.href=`mailto:carl.astratc@tutamail.com?subject=${encodeURIComponent('Quote request: '+g('service'))}&body=${encodeURIComponent(body)}`;});
+location.href=`mailto:carl.astratc@proton.me?subject=${encodeURIComponent('Quote request: '+g('service'))}&body=${encodeURIComponent(body)}`;});
