@@ -19,6 +19,7 @@
 ## Pay-per-call API (x402, no account needed)
 - Base URL / free catalog: https://astra-x402-data.astratc.workers.dev/
 - GET https://astra-x402-data.astratc.workers.dev/v1/snapshot : 0.05 USDC, top-100 market snapshot JSON
+  Also listed (verified) on PayAPI Market: https://payapi.market/api/astra-crypto-market-data
 - GET https://astra-x402-data.astratc.workers.dev/v1/coin?id=bitcoin : 0.01 USDC, one coin price/changes
 - GET https://astra-x402-data.astratc.workers.dev/v1/brief : 0.25 USDC, today's Astra Daily Crypto Brief (markdown)
 - GET https://astra-x402-data.astratc.workers.dev/v2/token-risk?chain=base&address=0x... : 1.00 USDC, token risk check (honeypot, taxes, owner powers, top holders, liquidity), 0-100 score
